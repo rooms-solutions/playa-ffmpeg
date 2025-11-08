@@ -520,9 +520,32 @@ vcpkg install ffmpeg:x64-windows-static-md
 vcpkg install ffmpeg:x64-windows-static
 ```
 
-**2. Build your project:**
+**2. Configure Windows system libraries (Windows only):**
 
-The `rust-ffmpeg` library now has **built-in vcpkg support**. Just build normally:
+vcpkg FFmpeg requires Windows system libraries. This project includes `.cargo/config.toml` with all required libraries:
+
+```toml
+# .cargo/config.toml (already included in rust-ffmpeg)
+[target.x86_64-pc-windows-msvc]
+rustflags = [
+    "-l", "bcrypt",    # For random number generation
+    "-l", "user32",    # For window management
+    "-l", "ole32",     # For COM
+    "-l", "oleaut32",  # For OLE automation
+    "-l", "mfuuid",    # For Media Foundation
+    "-l", "strmiids",  # For DirectShow
+    "-l", "mfplat",    # For Media Foundation Platform
+    "-l", "secur32",   # For security
+    "-l", "ws2_32",    # For Windows Sockets
+    "-l", "shlwapi",   # For shell API
+    "-l", "gdi32",     # For GDI functions
+    "-l", "vfw32",     # For Video for Windows
+]
+```
+
+**For your own project:** Copy `.cargo/config.toml` from this repo to your project root.
+
+**3. Build your project:**
 
 ```powershell
 # vcpkg will be detected automatically if VCPKG_ROOT is set
@@ -536,7 +559,7 @@ $env:VCPKG_ROOT = "C:\vcpkg"
 cargo build --release
 ```
 
-**3. Result:**
+**4. Result:**
 
 ✅ **Single `.exe` file** - no DLLs needed
 ✅ **30-60 MB executable** (FFmpeg embedded)

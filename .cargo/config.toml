@@ -1,0 +1,22 @@
+# Cargo configuration for rust-ffmpeg
+#
+# This file adds required Windows system libraries for FFmpeg static linking via vcpkg
+# Based on: https://github.com/CCExtractor/ccextractor/blob/master/docs/COMPILATION.MD
+
+[target.x86_64-pc-windows-msvc]
+rustflags = [
+    # Windows system libraries required by FFmpeg static build
+    # Note: x64-windows-static-md uses dynamic CRT, so no +crt-static flag
+    "-l", "bcrypt",        # BCryptOpenAlgorithmProvider, BCryptGenRandom
+    "-l", "user32",        # GetDesktopWindow, window management
+    "-l", "ole32",         # CoInitialize, CoUninitialize, COM
+    "-l", "oleaut32",      # OleCreatePropertyFrame
+    "-l", "mfuuid",        # IMFTransform, Media Foundation UUIDs
+    "-l", "strmiids",      # DirectShow GUIDs
+    "-l", "mfplat",        # Media Foundation Platform
+    "-l", "secur32",       # Security functions
+    "-l", "ws2_32",        # Windows Sockets
+    "-l", "shlwapi",       # SHCreateStreamOnFileA
+    "-l", "gdi32",         # BitBlt, CreateDIBSection, GDI functions
+    "-l", "vfw32",         # Video for Windows (capCreateCaptureWindow)
+]

@@ -1,6 +1,7 @@
 # Rust files
 target
 Cargo.lock
+task.md
 
 # Vim temporary files
 *.swp

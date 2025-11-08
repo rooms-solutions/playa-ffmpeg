@@ -5,13 +5,10 @@ use std::{
 
 use super::{Audio, Decoder, Subtitle, Video};
 use crate::{
-    Error,
-    Frame,
-    Rational,
+    Error, Frame, Rational,
     codec::{Context, Profile},
     ffi::*,
-    media,
-    packet,
+    media, packet,
 };
 
 pub struct Opened(pub Decoder);

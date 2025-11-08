@@ -8,8 +8,7 @@ use super::{Opened, slice};
 #[cfg(not(feature = "ffmpeg_5_0"))]
 use crate::frame;
 use crate::{
-    FieldOrder,
-    Rational,
+    FieldOrder, Rational,
     codec::Context,
     color,
     util::{chroma, format},

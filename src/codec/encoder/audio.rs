@@ -9,9 +9,7 @@ use libc::c_int;
 
 use super::Encoder as Super;
 use crate::{
-    ChannelLayout,
-    Dictionary,
-    Error,
+    ChannelLayout, Dictionary, Error,
     codec::{Context, traits},
     util::format,
 };

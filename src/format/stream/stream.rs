@@ -1,8 +1,6 @@
 use super::Disposition;
 use crate::{
-    DictionaryRef,
-    Discard,
-    Rational,
+    DictionaryRef, Discard, Rational,
     codec::{self, packet},
     ffi::*,
     format::context::common::Context,

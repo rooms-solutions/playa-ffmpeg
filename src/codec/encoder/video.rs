@@ -10,12 +10,9 @@ use super::{Comparison, Decision, Encoder as Super};
 #[cfg(not(feature = "ffmpeg_5_0"))]
 use super::{MotionEstimation, Prediction};
 use crate::{
-    Dictionary,
-    Error,
-    Rational,
+    Dictionary, Error, Rational,
     codec::{Context, traits},
-    color,
-    format,
+    color, format,
 };
 #[cfg(not(feature = "ffmpeg_5_0"))]
 use {crate::frame, crate::packet};

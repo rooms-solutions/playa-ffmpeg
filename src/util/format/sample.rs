@@ -1,8 +1,7 @@
 use std::{
     ffi::{CStr, CString},
     ops::Index,
-    ptr,
-    slice,
+    ptr, slice,
     str::from_utf8_unchecked,
 };
 

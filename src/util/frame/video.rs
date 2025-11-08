@@ -6,8 +6,7 @@ use std::{
 
 use super::Frame;
 use crate::{
-    Rational,
-    color,
+    Rational, color,
     ffi::*,
     picture,
     util::{chroma, format},

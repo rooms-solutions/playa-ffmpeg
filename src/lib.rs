@@ -16,17 +16,13 @@ pub use sys as ffi;
 pub mod util;
 pub use crate::util::{
     channel_layout::{self, ChannelLayout},
-    chroma,
-    color,
-    dictionary,
+    chroma, color, dictionary,
     dictionary::{Mut as DictionaryMut, Owned as Dictionary, Ref as DictionaryRef},
     error::{self, Error},
     frame::{self, Frame},
     log,
     mathematics::{self, Rescale, Rounding, rescale},
-    media,
-    option,
-    picture,
+    media, option, picture,
     rational::{self, Rational},
     time,
 };

@@ -8,8 +8,7 @@ use libc::c_int;
 
 use super::Encoder as Super;
 use crate::{
-    Dictionary,
-    Error,
+    Dictionary, Error,
     codec::{Context, traits},
 };
 

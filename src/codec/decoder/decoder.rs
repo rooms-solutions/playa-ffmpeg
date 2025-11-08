@@ -5,10 +5,7 @@ use std::{
 
 use super::{Audio, Check, Conceal, Opened, Subtitle, Video};
 use crate::{
-    Dictionary,
-    Discard,
-    Error,
-    Rational,
+    Dictionary, Discard, Error, Rational,
     codec::{Context, traits},
     ffi::*,
 };

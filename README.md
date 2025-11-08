@@ -1,3 +1,39 @@
+# rust-ffmpeg - Modern Fork with vcpkg Integration
+
+**Modified by:** Alex Joss (joss13@gmail.com)
+
+This is a modernized fork with cross-platform build improvements and vcpkg integration.
+
+## Key Modifications
+
+- **vcpkg Integration**: Automatic FFmpeg installation and static linking on Windows/Linux/macOS
+- **Rust 2024 Edition**: Updated to latest Rust edition with modern syntax
+- **FFmpeg 8.0 Support**: Full support for FFmpeg 8.0 APIs
+- **Cross-platform Build Scripts**:
+  - `build.ps1` - Windows (PowerShell)
+  - `build.sh` - Linux/macOS (unified script)
+  - `build-mac.sh` - macOS-specific (zsh optimized)
+- **Improved CI/CD**: Updated GitHub Actions workflows, modern action versions
+- **Enhanced Examples**: New video-info tool, improved frame dumping
+- **Static Linking**: Configured for static linking with vcpkg-provided libraries
+- **Visual Studio Setup**: Automatic MSVC environment configuration on Windows
+
+## Quick Start
+
+### Windows
+```powershell
+.\build.ps1
+```
+
+### Linux/macOS
+```bash
+./build.sh
+```
+
+See [examples/README.md](examples/README.md) for usage examples.
+
+---
+
 [![crates.io](https://img.shields.io/crates/v/ffmpeg-next.svg)](https://crates.io/crates/ffmpeg-next)
 [![docs.rs](https://docs.rs/ffmpeg-next/badge.svg)](https://docs.rs/ffmpeg-next/)
 [![build](https://github.com/zmwangx/rust-ffmpeg/workflows/build/badge.svg)](https://github.com/zmwangx/rust-ffmpeg/actions)

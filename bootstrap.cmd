@@ -59,7 +59,6 @@ goto :help
     exit /b %errorlevel%
 
 :crate
-    :: Check if cargo-release is installed
     cargo release --version >nul 2>&1
     if errorlevel 1 (
         echo Installing cargo-release...
@@ -74,7 +73,7 @@ goto :help
         echo Publishing crate to crates.io...
         cargo release --execute
     ) else (
-        echo Dry-run crate publish (add 'publish' to actually release)...
+        echo Dry-run mode
         cargo release
     )
     exit /b %errorlevel%

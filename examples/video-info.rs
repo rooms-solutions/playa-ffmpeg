@@ -1,3 +1,4 @@
+use image::{ImageBuffer, Rgb};
 /// Simple video file analyzer
 ///
 /// Usage: cargo run --example video-info -- <video-file> [frames-output-dir]
@@ -9,7 +10,6 @@
 /// - First frame decoding test
 /// - Dumps first 10 frames to JPEG files (optional)
 use playa_ffmpeg as ffmpeg;
-use image::{ImageBuffer, Rgb};
 use std::{env, fs, path::Path};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

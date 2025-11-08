@@ -8,7 +8,7 @@ authors = ["Alex Joss <joss13@gmail.com>", "meh. <meh@schizofreni.co>", "Zhiming
 license = "WTFPL"
 
 description   = "Safe FFmpeg wrapper with vcpkg integration for simplified cross-platform builds (FFmpeg 8.0, Rust 2024)"
-documentation = "https://docs.rs/ffmpeg-next"
+documentation = "https://docs.rs/playa-ffmpeg"
 homepage      = "https://github.com/ssoj13/playa-ffmpeg"
 repository    = "https://github.com/ssoj13/playa-ffmpeg"
 readme        = "README.md"

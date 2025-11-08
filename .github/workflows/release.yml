@@ -8,19 +8,15 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Generate release notes
         run: |
           cat >release_notes.md <<EOF
-          See [CHANGELOG.md](https://github.com/zmwangx/rust-ffmpeg/blob/${GITHUB_REF##*/}/CHANGELOG.md) for changes.
+          See [CHANGELOG.md](https://github.com/ssoj13/playa-ffmpeg/blob/${GITHUB_REF##*/}/CHANGELOG.md) for changes.
           EOF
       - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
           body_path: release_notes.md
           draft: false
           prerelease: false

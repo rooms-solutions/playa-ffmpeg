@@ -1,3 +1,26 @@
+8.0.0
+-----
+
+**FORK BY ALEX JOSS (playa-ffmpeg)**
+
+This is a modernized fork with cross-platform build improvements and vcpkg integration.
+
+- **vcpkg Integration**: Automatic FFmpeg installation and static linking on Windows/Linux/macOS
+- **Rust 2024 Edition**: Updated to latest Rust edition with modern syntax
+- **FFmpeg 8.0 Support**: Full support for FFmpeg 8.0 APIs with automatic version detection
+- **Cross-platform Build Scripts**: build.ps1 (Windows), build.sh (Linux/macOS), build-mac.sh (macOS zsh)
+- **Static Linking**: Configured for static linking with vcpkg-provided libraries via .cargo/config.toml
+- **Visual Studio Setup**: Automatic MSVC environment configuration on Windows
+- **Enhanced Examples**: New video-info tool, improved dump-frames with image export
+- **Improved CI/CD**: Updated GitHub Actions workflows, modern action versions
+- **Code Formatting**: Reformatted entire codebase with rustfmt (Rust 2024 edition)
+
+Repository: https://github.com/ssoj13/playa-ffmpeg
+Based on: ffmpeg-next 7.x (https://github.com/zmwangx/rust-ffmpeg)
+Original: meh.'s rust-ffmpeg (https://github.com/meh/rust-ffmpeg)
+
+---
+
 5.0.0
 -----
 

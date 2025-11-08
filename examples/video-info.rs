@@ -8,7 +8,7 @@
 /// - Frame count estimation
 /// - First frame decoding test
 /// - Dumps first 10 frames to JPEG files (optional)
-use ffmpeg_next as ffmpeg;
+use playa_ffmpeg as ffmpeg;
 use image::{ImageBuffer, Rgb};
 use std::{env, fs, path::Path};
 

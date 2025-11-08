@@ -15,7 +15,7 @@
 //   transcode-x264 input.flv output.mp4
 //   transcode-x264 input.mkv output.mkv 'preset=veryslow,crf=18'
 
-extern crate ffmpeg_next as ffmpeg;
+extern crate playa_ffmpeg as ffmpeg;
 
 use std::{collections::HashMap, env, time::Instant};
 

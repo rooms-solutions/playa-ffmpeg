@@ -1,4 +1,4 @@
-extern crate ffmpeg_next as ffmpeg;
+extern crate playa_ffmpeg as ffmpeg;
 
 use ffmpeg::{
     format::{Pixel, input},

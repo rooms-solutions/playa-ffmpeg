@@ -9,8 +9,8 @@
 ### Windows
 
 ```powershell
-# Run setup script
-.\setup-vcpkg.ps1
+# Run build script (installs vcpkg + FFmpeg + builds project)
+.\build.cmd
 
 # Or manual:
 git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
@@ -20,13 +20,25 @@ $env:VCPKG_ROOT = "C:\vcpkg"
 cargo build --release
 ```
 
-### Linux / macOS
+### Linux
 
 ```bash
-# Run setup script
-chmod +x setup-vcpkg.sh
-./setup-vcpkg.sh
+# Run build script (installs vcpkg + FFmpeg + builds project)
+chmod +x build.sh
+./build.sh
+```
 
+### macOS
+
+```zsh
+# Run build script (installs vcpkg + FFmpeg + builds project)
+chmod +x build-mac.sh
+./build-mac.sh
+```
+
+### Manual Setup (Linux / macOS)
+
+```bash
 # Or manual:
 git clone https://github.com/microsoft/vcpkg.git ~/vcpkg
 ~/vcpkg/bootstrap-vcpkg.sh

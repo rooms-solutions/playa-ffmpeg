@@ -1,4 +1,4 @@
-use ffi::*;
+use crate::ffi::*;
 use libc::c_int;
 #[cfg(feature = "ffmpeg_8_0")]
 use software::scaling::SwsFlags::*;

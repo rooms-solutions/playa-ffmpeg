@@ -3,10 +3,10 @@ use std::ops::{Deref, DerefMut};
 use std::slice;
 
 use super::Frame;
-use ffi::*;
+use crate::ffi::*;
 use libc::c_int;
-use util::format;
-use ChannelLayout;
+use crate::util::format;
+use crate::ChannelLayout;
 
 #[derive(PartialEq, Eq)]
 pub struct Audio(Frame);
@@ -14,7 +14,7 @@ pub struct Audio(Frame);
 impl Audio {
     #[inline(always)]
     pub unsafe fn wrap(ptr: *mut AVFrame) -> Self {
-        Audio(Frame::wrap(ptr))
+        Audio(unsafe { Frame::wrap(ptr) })
     }
 
     #[inline]
@@ -23,7 +23,9 @@ impl Audio {
         self.set_samples(samples);
         self.set_channel_layout(layout);
 
-        av_frame_get_buffer(self.as_mut_ptr(), 0);
+        unsafe {
+            av_frame_get_buffer(self.as_mut_ptr(), 0);
+        }
     }
 }
 

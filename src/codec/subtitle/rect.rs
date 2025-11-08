@@ -3,9 +3,9 @@ use std::marker::PhantomData;
 use std::str::from_utf8_unchecked;
 
 use super::{Flags, Type};
-use ffi::*;
+use crate::ffi::*;
 #[cfg(not(feature = "ffmpeg_5_0"))]
-use {format, Picture};
+use {crate::format, Picture};
 
 pub enum Rect<'a> {
     None(*const AVSubtitleRect),
@@ -16,20 +16,20 @@ pub enum Rect<'a> {
 
 impl<'a> Rect<'a> {
     pub unsafe fn wrap(ptr: *const AVSubtitleRect) -> Self {
-        match Type::from((*ptr).type_) {
+        match Type::from(unsafe { (*ptr).type_ }) {
             Type::None => Rect::None(ptr),
-            Type::Bitmap => Rect::Bitmap(Bitmap::wrap(ptr)),
-            Type::Text => Rect::Text(Text::wrap(ptr)),
-            Type::Ass => Rect::Ass(Ass::wrap(ptr)),
+            Type::Bitmap => Rect::Bitmap(unsafe { Bitmap::wrap(ptr) }),
+            Type::Text => Rect::Text(unsafe { Text::wrap(ptr) }),
+            Type::Ass => Rect::Ass(unsafe { Ass::wrap(ptr) }),
         }
     }
 
     pub unsafe fn as_ptr(&self) -> *const AVSubtitleRect {
         match *self {
             Rect::None(ptr) => ptr,
-            Rect::Bitmap(ref b) => b.as_ptr(),
-            Rect::Text(ref t) => t.as_ptr(),
-            Rect::Ass(ref a) => a.as_ptr(),
+            Rect::Bitmap(ref b) => unsafe { b.as_ptr() },
+            Rect::Text(ref t) => unsafe { t.as_ptr() },
+            Rect::Ass(ref a) => unsafe { a.as_ptr() },
         }
     }
 }

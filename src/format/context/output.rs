@@ -7,9 +7,9 @@ use libc;
 
 use super::common::Context;
 use super::destructor;
-use codec::traits;
-use ffi::*;
-use {codec, format, ChapterMut, Dictionary, Error, Rational, StreamMut};
+use crate::codec::traits;
+use crate::ffi::*;
+use {crate::codec, crate::format, crate::ChapterMut, crate::Dictionary, crate::Error, crate::Rational, crate::StreamMut};
 
 pub struct Output {
     ptr: *mut AVFormatContext,
@@ -22,7 +22,7 @@ impl Output {
     pub unsafe fn wrap(ptr: *mut AVFormatContext) -> Self {
         Output {
             ptr,
-            ctx: Context::wrap(ptr, destructor::Mode::Output),
+            ctx: unsafe { Context::wrap(ptr, destructor::Mode::Output) },
         }
     }
 

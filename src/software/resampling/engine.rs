@@ -1,4 +1,4 @@
-use ffi::*;
+use crate::ffi::*;
 use sys::SwrEngine::*;
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]

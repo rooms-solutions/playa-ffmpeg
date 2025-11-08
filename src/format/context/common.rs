@@ -4,9 +4,9 @@ use std::ptr;
 use std::rc::Rc;
 
 use super::destructor::{self, Destructor};
-use ffi::*;
+use crate::ffi::*;
 use libc::{c_int, c_uint};
-use {media, Chapter, ChapterMut, DictionaryRef, Stream, StreamMut};
+use {crate::media, crate::Chapter, crate::ChapterMut, crate::DictionaryRef, crate::Stream, crate::StreamMut};
 
 pub struct Context {
     ptr: *mut AVFormatContext,
@@ -19,7 +19,7 @@ impl Context {
     pub unsafe fn wrap(ptr: *mut AVFormatContext, mode: destructor::Mode) -> Self {
         Context {
             ptr,
-            dtor: Rc::new(Destructor::new(ptr, mode)),
+            dtor: Rc::new(unsafe { Destructor::new(ptr, mode) }),
         }
     }
 

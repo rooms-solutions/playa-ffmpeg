@@ -1,11 +1,11 @@
 use std::marker::PhantomData;
 use std::ptr;
 
-use device;
-use ffi::*;
-use format::context::common::Context;
+use crate::device;
+use crate::ffi::*;
+use crate::format::context::common::Context;
 use libc::c_int;
-use Error;
+use crate::Error;
 
 impl Context {
     pub fn devices(&self) -> Result<DeviceIter<'_>, Error> {
@@ -24,7 +24,7 @@ impl<'a> DeviceIter<'a> {
     pub unsafe fn wrap(ctx: *const AVFormatContext) -> Result<Self, Error> {
         let mut ptr: *mut AVDeviceInfoList = ptr::null_mut();
 
-        match avdevice_list_devices(ctx as *mut _, &mut ptr) {
+        match unsafe { avdevice_list_devices(ctx as *mut _, &mut ptr) } {
             n if n < 0 => Err(Error::from(n)),
 
             _ => Ok(DeviceIter {

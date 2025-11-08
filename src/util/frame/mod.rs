@@ -10,8 +10,8 @@ pub use self::audio::Audio;
 pub mod flag;
 pub use self::flag::Flags;
 
-use ffi::*;
-use {Dictionary, DictionaryRef};
+use crate::ffi::*;
+use {crate::Dictionary, crate::DictionaryRef};
 
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
 pub struct Packet {
@@ -45,7 +45,7 @@ impl Frame {
     #[inline(always)]
     pub unsafe fn empty() -> Self {
         Frame {
-            ptr: av_frame_alloc(),
+            ptr: unsafe { av_frame_alloc() },
             _own: true,
         }
     }
@@ -62,7 +62,7 @@ impl Frame {
 
     #[inline(always)]
     pub unsafe fn is_empty(&self) -> bool {
-        (*self.as_ptr()).data[0].is_null()
+        unsafe { (*self.as_ptr()).data[0].is_null() }
     }
 }
 

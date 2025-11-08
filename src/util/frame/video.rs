@@ -3,13 +3,13 @@ use std::ops::{Deref, DerefMut};
 use std::slice;
 
 use super::Frame;
-use color;
-use ffi::*;
+use crate::color;
+use crate::ffi::*;
 use libc::c_int;
-use picture;
-use util::chroma;
-use util::format;
-use Rational;
+use crate::picture;
+use crate::util::chroma;
+use crate::util::format;
+use crate::Rational;
 
 #[derive(PartialEq, Eq)]
 pub struct Video(Frame);
@@ -17,7 +17,7 @@ pub struct Video(Frame);
 impl Video {
     #[inline(always)]
     pub unsafe fn wrap(ptr: *mut AVFrame) -> Self {
-        Video(Frame::wrap(ptr))
+        Video(unsafe { Frame::wrap(ptr) })
     }
 
     #[inline]
@@ -26,7 +26,9 @@ impl Video {
         self.set_width(width);
         self.set_height(height);
 
-        av_frame_get_buffer(self.as_mut_ptr(), 32);
+        unsafe {
+            av_frame_get_buffer(self.as_mut_ptr(), 32);
+        }
     }
 }
 
@@ -378,7 +380,7 @@ pub unsafe trait Component {
 }
 
 #[cfg(feature = "image")]
-unsafe impl Component for ::image::Luma<u8> {
+unsafe impl Component for crate::image::Luma<u8> {
     #[inline(always)]
     fn is_valid(format: format::Pixel) -> bool {
         format == format::Pixel::GRAY8
@@ -386,7 +388,7 @@ unsafe impl Component for ::image::Luma<u8> {
 }
 
 #[cfg(feature = "image")]
-unsafe impl Component for ::image::Rgb<u8> {
+unsafe impl Component for crate::image::Rgb<u8> {
     #[inline(always)]
     fn is_valid(format: format::Pixel) -> bool {
         format == format::Pixel::RGB24
@@ -394,7 +396,7 @@ unsafe impl Component for ::image::Rgb<u8> {
 }
 
 #[cfg(feature = "image")]
-unsafe impl Component for ::image::Rgba<u8> {
+unsafe impl Component for crate::image::Rgba<u8> {
     #[inline(always)]
     fn is_valid(format: format::Pixel) -> bool {
         format == format::Pixel::RGBA

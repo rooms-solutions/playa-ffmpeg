@@ -2,7 +2,7 @@
 # Unified vcpkg setup script for rust-ffmpeg
 # Works on Linux and macOS
 #
-# Usage: ./setup-vcpkg.sh
+# Usage: ./build.sh
 
 set -e
 

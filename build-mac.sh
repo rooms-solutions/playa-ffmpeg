@@ -2,7 +2,7 @@
 # vcpkg setup script for rust-ffmpeg on macOS
 # Optimized for zsh (default shell on macOS)
 #
-# Usage: ./setup-vcpkg-mac.sh
+# Usage: ./build-mac.sh
 
 set -e
 

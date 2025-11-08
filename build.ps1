@@ -85,12 +85,16 @@ Write-Host ""
 Write-Host "✅ Setup complete!" -ForegroundColor Green
 Write-Host ""
 
-# Show binary info
-$exePath = "target\release\examples\video-info.exe"
-if (Test-Path $exePath) {
-    $size = (Get-Item $exePath).Length / 1MB
-    Write-Host "Binary example: $exePath"
-    Write-Host "Binary size: $([math]::Round($size, 2)) MB"
+# Show library info
+Write-Host "Binary location: target\release\"
+Write-Host "Binary size:"
+
+$libPath = Get-ChildItem "target\release\ffmpeg_next.dll" -ErrorAction SilentlyContinue
+if ($libPath) {
+    $size = $libPath.Length / 1MB
+    Write-Host "  ffmpeg_next.dll: $([math]::Round($size, 2)) MB"
+} else {
+    Write-Host "  (library built)"
 }
 
 Write-Host ""

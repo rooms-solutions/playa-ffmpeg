@@ -15,21 +15,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Set up vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: '365f6444ab40ee87c73c947b475b3a267b3cb77c'
-
-      - name: Cache vcpkg
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ github.workspace }}/vcpkg
-            ~/.cache/vcpkg
-          key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
-          restore-keys: |
-            ${{ runner.os }}-vcpkg-
-
       - name: Install dependencies
         run: |
           sudo apt update
@@ -44,9 +29,14 @@ jobs:
             libtool \
             libxv-dev \
             libc++-dev
-          vcpkg install ffmpeg[nvcodec]:x64-linux-release
         env:
-          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+          VCPKG_INSTALLATION_ROOT: /usr/local/share/vcpkg
+
+      - name: Install FFmpeg via vcpkg
+        run: |
+          vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-linux-release
+        env:
+          VCPKG_INSTALLATION_ROOT: /usr/local/share/vcpkg
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -72,21 +62,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Set up vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: '365f6444ab40ee87c73c947b475b3a267b3cb77c'
-
-      - name: Cache vcpkg
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ github.workspace }}/vcpkg
-            ~/.cache/vcpkg
-          key: ${{ runner.os }}-${{ runner.arch }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ runner.arch }}-vcpkg-
-
       - name: Determine triplet
         id: triplet
         run: |
@@ -105,9 +80,14 @@ jobs:
             automake \
             libtool \
             pkg-config
-          vcpkg install ffmpeg[nvcodec]:${{ steps.triplet.outputs.triplet }}
         env:
-          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+          VCPKG_INSTALLATION_ROOT: /usr/local/share/vcpkg
+
+      - name: Install FFmpeg via vcpkg
+        run: |
+          vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:${{ steps.triplet.outputs.triplet }}
+        env:
+          VCPKG_INSTALLATION_ROOT: /usr/local/share/vcpkg
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -135,27 +115,16 @@ jobs:
         with:
           submodules: true
 
-      - name: Set up vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: '365f6444ab40ee87c73c947b475b3a267b3cb77c'
-
-      - name: Cache vcpkg
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ github.workspace }}/vcpkg
-            ~\AppData\Local\vcpkg
-          key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
-          restore-keys: |
-            ${{ runner.os }}-vcpkg-
-
       - name: Install dependencies
         run: |
           $VCINSTALLDIR = $(& "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath)
           Add-Content $env:GITHUB_ENV "LIBCLANG_PATH=${VCINSTALLDIR}\VC\Tools\LLVM\x64\bin`n"
-          vcpkg install ffmpeg[nvcodec]:x64-windows-static-md
-          Add-Content $env:GITHUB_ENV "VCPKG_ROOT=${{ github.workspace }}\vcpkg`n"
+
+      - name: Install FFmpeg via vcpkg
+        run: |
+          vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-windows-static-md
+        env:
+          VCPKG_INSTALLATION_ROOT: C:\vcpkg
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:

@@ -31,4 +31,15 @@ fn main() {
             println!(r#"cargo:rustc-check-cfg=cfg(feature, values("{}"))"#, name["DEP_FFMPEG_".len()..name.len()].to_lowercase());
         }
     }
+
+    // Link Windows system libraries required by FFmpeg
+    #[cfg(target_os = "windows")]
+    {
+        println!("cargo:rustc-link-lib=strmiids");
+        println!("cargo:rustc-link-lib=uuid");
+        println!("cargo:rustc-link-lib=ole32");
+        println!("cargo:rustc-link-lib=oleaut32");
+        println!("cargo:rustc-link-lib=mfuuid");
+        println!("cargo:rustc-link-lib=mfplat");
+    }
 }

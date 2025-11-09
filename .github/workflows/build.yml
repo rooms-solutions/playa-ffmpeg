@@ -85,7 +85,7 @@ jobs:
 
       - name: Install FFmpeg via vcpkg
         run: |
-          vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:${{ steps.triplet.outputs.triplet }}
+          vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale]:${{ steps.triplet.outputs.triplet }}
         env:
           VCPKG_INSTALLATION_ROOT: /usr/local/share/vcpkg
       - name: Set up Rust

@@ -47,6 +47,7 @@ jobs:
           vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-linux-release
         env:
           VCPKG_INSTALLATION_ROOT: /usr/local/share/vcpkg
+          VCPKG_BUILD_TYPE: release
 
       - name: Set environment variables
         run: |
@@ -114,6 +115,7 @@ jobs:
           vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale]:${{ steps.triplet.outputs.triplet }}
         env:
           VCPKG_INSTALLATION_ROOT: /usr/local/share/vcpkg
+          VCPKG_BUILD_TYPE: release
 
       - name: Set environment variables
         run: |
@@ -168,6 +170,8 @@ jobs:
           vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-windows-static-md
         env:
           VCPKG_INSTALLATION_ROOT: C:\vcpkg
+          VCPKG_BUILD_TYPE: release
+
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:

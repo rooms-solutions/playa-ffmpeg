@@ -61,10 +61,11 @@ publish_crate() {
 
     if [ "$1" = "publish" ]; then
         echo "Publishing crate to crates.io..."
-        cargo release --execute
+        cargo release patch --execute --no-confirm
     else
-        echo "Dry-run crate publish (add 'publish' to actually release)..."
-        cargo release
+        echo "Dry-run mode (use './bootstrap.sh crate publish' to actually publish)"
+        echo "This will NOT modify any files, just show what would happen"
+        cargo release patch --no-push --allow-branch HEAD
     fi
 }
 

@@ -1,13 +1,13 @@
 use std::env;
+use std::process::Command;
 
 fn main() {
-    // Try vcpkg first (optional, Windows-friendly)
-    // This helps find FFmpeg when installed via: vcpkg install ffmpeg:x64-windows-static-md
-    #[cfg(target_os = "windows")]
-    {
-        // Only try vcpkg if FFMPEG_DIR is not explicitly set
-        if env::var("FFMPEG_DIR").is_err() {
-            if let Ok(lib) = vcpkg::find_package("ffmpeg") {
+    // Try vcpkg on all platforms (not just Windows)
+    // Only try vcpkg if FFMPEG_DIR is not explicitly set
+    if env::var("FFMPEG_DIR").is_err() {
+        // First, try to find existing FFmpeg installation via vcpkg
+        match vcpkg::find_package("ffmpeg") {
+            Ok(lib) => {
                 println!("cargo:warning=Found FFmpeg via vcpkg");
 
                 // Emit include paths for ffmpeg-sys-next
@@ -16,11 +16,71 @@ fn main() {
                 }
 
                 println!("cargo:rerun-if-env-changed=VCPKG_ROOT");
-            } else {
-                println!("cargo:warning=vcpkg FFmpeg not found, using system FFmpeg or FFMPEG_DIR");
+            }
+            Err(_) => {
+                // If not found, try to install it automatically
+                if let Ok(vcpkg_root) = env::var("VCPKG_ROOT") {
+                    println!("cargo:warning=FFmpeg not found in vcpkg, attempting automatic installation...");
+
+                    let triplet = get_vcpkg_triplet();
+                    let vcpkg_exe = if cfg!(target_os = "windows") {
+                        format!("{}/vcpkg.exe", vcpkg_root)
+                    } else {
+                        format!("{}/vcpkg", vcpkg_root)
+                    };
+
+                    // Install FFmpeg via vcpkg
+                    let status = Command::new(&vcpkg_exe)
+                        .args(&["install", &format!("ffmpeg:{}", triplet)])
+                        .status();
+
+                    match status {
+                        Ok(s) if s.success() => {
+                            println!("cargo:warning=Successfully installed FFmpeg via vcpkg");
+                            // Try to find it again after installation
+                            if let Ok(lib) = vcpkg::find_package("ffmpeg") {
+                                for path in &lib.include_paths {
+                                    println!("cargo:include={}", path.display());
+                                }
+                            }
+                        }
+                        Ok(s) => {
+                            println!("cargo:warning=vcpkg install failed with status: {}", s);
+                            println!("cargo:warning=Falling back to system FFmpeg or pkg-config");
+                        }
+                        Err(e) => {
+                            println!("cargo:warning=Failed to run vcpkg: {}", e);
+                            println!("cargo:warning=Falling back to system FFmpeg or pkg-config");
+                        }
+                    }
+                } else {
+                    println!("cargo:warning=VCPKG_ROOT not set, falling back to system FFmpeg or pkg-config");
+                }
+
+                println!("cargo:rerun-if-env-changed=VCPKG_ROOT");
             }
         }
     }
+}
+
+fn get_vcpkg_triplet() -> String {
+    if cfg!(target_os = "windows") {
+        if cfg!(target_env = "msvc") {
+            "x64-windows".to_string()
+        } else {
+            "x64-mingw-dynamic".to_string()
+        }
+    } else if cfg!(target_os = "macos") {
+        if cfg!(target_arch = "aarch64") {
+            "arm64-osx".to_string()
+        } else {
+            "x64-osx".to_string()
+        }
+    } else {
+        // Linux
+        "x64-linux".to_string()
+    }
+}
 
     // Process FFmpeg feature flags from ffmpeg-sys-next
     for (name, value) in env::vars() {

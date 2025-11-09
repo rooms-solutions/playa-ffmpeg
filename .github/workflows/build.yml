@@ -151,7 +151,7 @@ jobs:
     name: Windows - FFmpeg 7.1 vcpkg static - build, test and lint
     runs-on: windows-latest
     env:
-      VCPKG_DEFAULT_TRIPLET: x64-windows-static-md
+      VCPKG_DEFAULT_TRIPLET: x64-windows-static-md-release
       VCPKG_ROOT: C:\vcpkg
     steps:
       - uses: actions/checkout@v4
@@ -167,10 +167,21 @@ jobs:
             C:\vcpkg\downloads
             C:\vcpkg\packages
             ~\AppData\Local\vcpkg\archives
-          key: ${{ runner.os }}-vcpkg-ffmpeg-nvcodec-${{ hashFiles('.github/workflows/build.yml') }}-v2
+          key: ${{ runner.os }}-vcpkg-ffmpeg-nvcodec-release-only-${{ hashFiles('.github/workflows/build.yml') }}-v3
           restore-keys: |
-            ${{ runner.os }}-vcpkg-ffmpeg-nvcodec-${{ hashFiles('.github/workflows/build.yml') }}-
-            ${{ runner.os }}-vcpkg-ffmpeg-nvcodec-
+            ${{ runner.os }}-vcpkg-ffmpeg-nvcodec-release-only-${{ hashFiles('.github/workflows/build.yml') }}-
+            ${{ runner.os }}-vcpkg-ffmpeg-nvcodec-release-only-
+
+      - name: Create custom release-only triplet
+        run: |
+          $tripletContent = @"
+          set(VCPKG_TARGET_ARCHITECTURE x64)
+          set(VCPKG_CRT_LINKAGE dynamic)
+          set(VCPKG_LIBRARY_LINKAGE static)
+          set(VCPKG_BUILD_TYPE release)
+          "@
+          New-Item -Path "C:\vcpkg\triplets\community" -ItemType Directory -Force | Out-Null
+          Set-Content -Path "C:\vcpkg\triplets\community\x64-windows-static-md-release.cmake" -Value $tripletContent
 
       - name: Install dependencies
         run: |
@@ -179,10 +190,9 @@ jobs:
 
       - name: Install FFmpeg via vcpkg
         run: |
-          vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-windows-static-md
+          vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-windows-static-md-release
         env:
           VCPKG_INSTALLATION_ROOT: C:\vcpkg
-          VCPKG_BUILD_TYPE: release
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable

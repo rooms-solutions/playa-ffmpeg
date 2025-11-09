@@ -43,7 +43,25 @@ export VCPKG_ROOT=/usr/local/share/vcpkg
 
 ### Install FFmpeg via vcpkg
 
-**Windows (MSVC):**
+**Windows (MSVC) - Release only (faster builds):**
+
+First create a custom triplet for release-only builds:
+```powershell
+# Create triplet file
+$tripletContent = @"
+set(VCPKG_TARGET_ARCHITECTURE x64)
+set(VCPKG_CRT_LINKAGE dynamic)
+set(VCPKG_LIBRARY_LINKAGE static)
+set(VCPKG_BUILD_TYPE release)
+"@
+New-Item -Path "$env:VCPKG_ROOT\triplets\community" -ItemType Directory -Force
+Set-Content -Path "$env:VCPKG_ROOT\triplets\community\x64-windows-static-md-release.cmake" -Value $tripletContent
+
+# Install FFmpeg (release only - ~2x faster than default)
+vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-windows-static-md-release
+```
+
+**Windows (MSVC) - Debug + Release (default):**
 ```powershell
 vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale,nvcodec]:x64-windows-static-md
 ```
@@ -63,7 +81,10 @@ vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale]
 vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale]:arm64-osx-release
 ```
 
-**Note:** `nvcodec` feature is not available on macOS (NVENC is NVIDIA-only). macOS uses VideoToolbox for hardware encoding.
+**Notes:**
+- `nvcodec` feature is not available on macOS (NVENC is NVIDIA-only). macOS uses VideoToolbox for hardware encoding.
+- Windows: Use `x64-windows-static-md-release` triplet to skip debug builds and reduce build time by ~50%.
+- CI uses release-only triplets to optimize build times.
 
 ## Quick Start
 

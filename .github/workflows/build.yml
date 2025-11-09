@@ -15,6 +15,16 @@ jobs:
         with:
           submodules: true
 
+      - name: Cache vcpkg
+        uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/share/vcpkg/installed
+            ~/.cache/vcpkg
+          key: ${{ runner.os }}-vcpkg-x64-linux-release-${{ hashFiles('.github/workflows/build.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-x64-linux-release-
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -124,6 +134,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+
+      - name: Cache vcpkg
+        uses: actions/cache@v4
+        with:
+          path: |
+            C:\vcpkg\installed
+            ~\AppData\Local\vcpkg\archives
+          key: ${{ runner.os }}-vcpkg-x64-windows-static-md-${{ hashFiles('.github/workflows/build.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-x64-windows-static-md-
 
       - name: Install dependencies
         run: |

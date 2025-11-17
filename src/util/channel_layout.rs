@@ -12,6 +12,9 @@ impl PartialEq for ChannelLayout {
 }
 impl Eq for ChannelLayout {}
 
+unsafe impl Send for ChannelLayout {}
+unsafe impl Sync for ChannelLayout {}
+
 impl std::fmt::Debug for ChannelLayout {
     fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
         let mut s = fmt.debug_struct("ChannelLayout");
